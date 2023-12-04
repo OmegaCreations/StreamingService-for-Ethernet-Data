@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^3.0.2"
+  },
+  "name": "streamingservice",
+  "version": "1.0.0",
+  "description": "Streaming Service for Ethernet Packets",
+  "main": "server.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon --delay 500ms server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
