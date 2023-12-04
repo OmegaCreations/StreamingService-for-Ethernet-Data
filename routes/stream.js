@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const rootDir = require('../utils/paths');
 const fs = require('fs');
+const ffmpeg = require('ffmpeg');
 
 const router = express.Router();
 
@@ -13,16 +14,14 @@ router.get('/stream', (req, res, next) => {
     res.sendFile(path.join(rootDir, 'views', 'stream.html'));
 });
 
-// Video endpoint
-
 router.get('/video', (req, res, next) => {
     // range header to know which part of video send back to client
     const range = req.headers.range;
-    
-    if(!range)
-    res.status(400).send("Requires Range header.");
-
-    const streamDataPath = "../public/stream/example.mp4";
+    console.log(range);
+    if(!range){
+        res.status(401).send("Requires Range header.");
+    }
+    const streamDataPath = path.join(rootDir, 'public', 'stream', 'liga.mp4');
     const streamDataSize = fs.statSync(streamDataPath).size;   
 
     // Parsing data
@@ -30,8 +29,20 @@ router.get('/video', (req, res, next) => {
     const start = Number(range.replace(/\D/g, "")); // Get starting byte from header and convert to number
     const end = Math.min(start + CHUNK_SIZE, streamDataSize-1); // End byte just for constant video testing
 
-    // TODO: Response headers with data chunks!
-});
+    // Response headers with data chunks
+    const contentLength = end - start + 1;
+    const headers = {
+        "Content-Range": `bytes ${start}-${end}/${streamDataSize}`, // Size of content sent
+        "Accept-Ranges": "bytes",
+        "Content-Length": contentLength,
+        "Content-Type": "video/mp4",
+    }
 
+    // 206 - sending partial content
+    res.writeHead(206, headers);
+
+    const stream = fs.createReadStream(streamDataPath, { start, end });
+    stream.pipe(res);
+});
 
 exports.routes = router;
