@@ -1,48 +1,82 @@
 // Stream Route
 
-// Imports
+// Imports ==========================================
 const express = require('express');
 const path = require('path');
-const rootDir = require('../utils/paths');
-const fs = require('fs');
-const ffmpeg = require('ffmpeg');
+const rootDir = require('../utils/paths'); // directory of root
+const { SerialPort } = require('serialport')
 
+// router ============================================
 const router = express.Router();
 
-// Res HTML Page
+// Response with HTML Page ===========================
 router.get('/stream', (req, res, next) => {
     res.sendFile(path.join(rootDir, 'views', 'stream.html'));
 });
 
-router.get('/video', (req, res, next) => {
-    // range header to know which part of video send back to client
-    const range = req.headers.range;
-    console.log(range);
-    if(!range){
-        res.status(401).send("Requires Range header.");
+// COM port data stream ==============================
+// Setup serial port
+const _PORT = "COM13";
+const _BAUD_RATE = 9600;
+var serial = new SerialPort({
+    path: _PORT,
+    baudRate: _BAUD_RATE,
+    autoOpen: true,
+}, function (err) {
+    if (err)
+    return console.log('Error: ', err.message)
+});
+
+// Convert given stream of bytes to CHUNKS
+// It should allow to stream video with chunks
+const dataToChunk = (data) => {
+    const spaces = data.filter(x => x === ' ').length;
+    if(spaces == 9215){
+        // Print the received data
+        console.log(spaces);
+        console.log(" ^spaces, newlines V");
+        console.log(data.filter(x => x === '\n').length);
+
+        // Write the data to the file
+        //file.write(data + '\n')
+        // Example input string (replace this with your actual input string)
+        //input_string = data
+        // Specify the size of the image
+        //let image_width = 96
+        //let image_height = 96
+
+        // give each generated file a unique, date-based filename
+        // Get the current date and time
+        //current_datetime = datetime.now()
+
+        // Format the datetime string with hour underscored
+        //formatted_datetime = current_datetime.strftime("%H_%M_%S")
+
+        
+        // Specify the output BMP file
+        //let output_bmp_file = hourminute +"/p_"+formatted_datetime+".bmp";
+        //console.log(output_bmp_file);
+
+        // Create BMP from the input string
+        //create_bmp_from_string(input_string, image_width, image_height, output_bmp_file)
+
+        //console.log(`BMP image saved to ${output_bmp_file}`);
     }
-    const streamDataPath = path.join(rootDir, 'public', 'stream', 'liga.mp4');
-    const streamDataSize = fs.statSync(streamDataPath).size;   
+};
 
-    // Parsing data
-    const CHUNK_SIZE = 10 ** 6 // size of 1MB of data
-    const start = Number(range.replace(/\D/g, "")); // Get starting byte from header and convert to number
-    const end = Math.min(start + CHUNK_SIZE, streamDataSize-1); // End byte just for constant video testing
+router.get('/com_port', (req, res, next) => {
+   // On serial opened
+    serial.on('open', () => {
+        console.log('open');
 
-    // Response headers with data chunks
-    const contentLength = end - start + 1;
-    const headers = {
-        "Content-Range": `bytes ${start}-${end}/${streamDataSize}`, // Size of content sent
-        "Accept-Ranges": "bytes",
-        "Content-Length": contentLength,
-        "Content-Type": "video/mp4",
-    }
-
-    // 206 - sending partial content
-    res.writeHead(206, headers);
-
-    const stream = fs.createReadStream(streamDataPath, { start, end });
-    stream.pipe(res);
+        // On data transmission
+        serial.on('data', (data) => {
+            // console log data converted buffer into (by default) UTF-8
+            console.log(data.toString('utf-8')); 
+            let convertable_data = data.toString('utf-8').trim(); // trimmed data
+            dataToChunk(convertable_data);
+        });
+    }); 
 });
 
 exports.routes = router;

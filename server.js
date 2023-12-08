@@ -10,7 +10,8 @@ const app = express();
 
 // Routes
 const indexRoute = require('./routes/index');
-const streamRoute = require('./routes/stream');
+const streamRouteCOM = require('./routes/stream');
+const streamRouteVideos = require('./routes/videos');
 
 // Body parser
 app.use(bodyParser.urlencoded({extended: false}));
@@ -18,7 +19,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // External routes for application
 // /ml/ for all content of Machine Learning Project
-app.use('/ml', streamRoute.routes); // module.routes
+app.use('/ml', streamRouteCOM.routes); // module.routes
+
+// /data/ for all database retrieving content
+app.use('/data', streamRouteVideos.routes); // module.routes
+
 // Welcome page
 app.use(indexRoute.routes);
 
