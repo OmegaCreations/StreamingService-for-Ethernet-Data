@@ -19,13 +19,16 @@ router.get('/stream', (req, res, next) => {
 const imagePath = path.join(rootDir, 'images'); // Ścieżka do folderu z obrazami
 router.get('/com_port', (req, res) => {
     // Pobierz najnowszy obraz z folderu
-    const latestImage = getLatestImage(imagePath);
-    
+    let latestImage = getLatestImage(imagePath);
+    let oldImg;
+    const noStreamImage = path.join(rootDir, 'public', 'stream', 'no_stream.png');
+
     // Jeśli obraz istnieje, wyślij go jako odpowiedź
-    if (latestImage) {
+    if (latestImage && latestImage!=oldImg) {
+        oldImg = latestImage;
         res.sendFile(latestImage);
     } else {
-        res.send('Brak dostępnego obrazu.');
+        res.sendFile(noStreamImage);
     }
 });
 
@@ -59,4 +62,4 @@ function watchImageFolder() {
     });
 }
 
-exports.routes = router;
+exports.routes = router;    

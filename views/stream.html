@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="1"> <!-- Odśwież co 1 sekundę -->
+    <meta http-equiv="refresh" content="1">
     <title>ML - Stream</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
     <main>
@@ -15,11 +16,15 @@
                 <li><a href="/data/videos/">Videos</a></li>
             </ul>
         </header>
-        <h1>Machine Learning Project for Edge Devices in Space.</h1>
-        <h2>Platform Recives AI filtered data trough Ethernet signal and generates image stream below.</h2>
 
-        <!-- Streaming file at /video endpoint -->
-        <image width="500" height="500" src="/ml/com_port" />
+        <section class="hero">
+            <h1>Machine Learning Project for <span>Edge Devices in Space.<span></h1>
+            <h2>Platform Recives <span>AI filtered data trough Ethernet signal</span> and generates image stream below.</h2>
+            
+            <!-- Streaming file at /video endpoint -->
+            <img width="500" height="500" id="ml_stream" src="/ml/com_port" />
+            
+        </section>
     </main>
 </body>
 </html>

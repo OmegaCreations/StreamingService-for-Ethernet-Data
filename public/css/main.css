@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,500;0,600;0,700;0,800;0,900;1,100;1,300&display=swap');
+
+:root {
+    --dark: #0D0A0B;
+    --light: #F3EFF5;
+    --green: #627264;
+    --purp-dark: #553C9A;
+    --purp-light: #B393D3;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+
+/* Header */
+header {
+    height: auto;
+    padding: 10px 0px;
+    background-color: var(--light);
+}
+
+header ul {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+header ul li {
+    list-style: none;
+    font-weight: 400;
+    font-style: normal;
+}
+
+header ul li a {
+    color: var(--dark);
+
+    text-decoration: none;
+}
+
+/* Hero section styling */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 0px 30px;
+}
+
+span {
+    font-weight: 400;
+    font-style: italic;
+}
+
+.hero h1, .hero h2, .hero h3 {
+    font-size: 70px;
+    font-weight: 600;
+    background-image: linear-gradient(to left, var(--purp-dark), var(--purp-light));
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+.hero h2 {
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.hero h3 {
+    font-size: 30px;
+    font-weight: 400;
+}
+
+/* stream */
+.hero img, .hero video {
+    margin-top: 35px;
+    border: var(--dark) solid 2px;
+}

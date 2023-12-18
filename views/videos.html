@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Videos</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
     <main>
@@ -14,14 +15,17 @@
                 <li><a active href="/data/videos/">Videos</a></li>
             </ul>
         </header>
-        <h1>Stream videos from project database</h1>
-        <h2>Platform Recives request for video and generates it below in chunks.</h2>
-        <h3>Future - Upload system</h3>
 
-        <!-- Streaming file at /video endpoint -->
-        <video id="videoPlayer" width="50%" controls muted="muted" autoplay>
-            <source src="/data/videostream" type="video/mp4" />
-        </video>
+        <section class="hero">
+            <h1>Stream videos from project database</h1>
+            <h2>Platform Recives request for video and generates it below in chunks.</h2>
+            <h3>Future - Upload system</h3>
+
+            <!-- Streaming file at /video endpoint -->
+            <video id="videoPlayer" width="50%" controls muted="muted" autoplay>
+                <source src="/data/videostream" type="video/mp4" />
+            </video>
+        </section>
     </main>
 </body>
 </html>
